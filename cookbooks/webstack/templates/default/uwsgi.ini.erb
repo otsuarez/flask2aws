@@ -1,0 +1,20 @@
+[uwsgi]
+gid = www-data
+uid = www-data
+pythonpath = <%= node[:webstack][:deploy_dir] %><%= node[:webstack][:appname] %>
+plugins = python
+
+#file = /var/www/flask/myflask/wsgi_app.py
+file = <%= node[:webstack][:wsgi_app_link_dir] %><%= node[:webstack][:appname] %>
+callable=app
+
+#Using named socket file makes it a bit easier to match Nginx and uWSGI configurations
+socket = /tmp/<%= node[:webstack][:appname] %>.sock
+chmod-socket = true
+
+master = true
+processes = 1
+harakiri = 20
+limit-as = 128
+memory-report
+no-orphans
